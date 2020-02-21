@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <section class="section">
+      <div  class="container is-fluid">
+        <transition-group tag="div" name="cards" class="columns is-multiline" appear>
+          <div class="column is-one-third" v-for="(item, index) in showCardValue.length" :key="`key-${index}`">
+            <div class="card" ref="card">
+              <div class="card-image">
+                <figure class="image is-16by9">
+                  <img :src="card[index].image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">{{ card[index].title }}</p>
+                  </div>
+                </div>
+                <div class="content">
+                  {{ card[index].body }}
+                  <p class="title is-4 price">{{ card[index].price }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition-group>
+        <div class="column has-text-centered" v-if="card.length === 0"  key="null">
+          <div class="card" ref="card">
+            <div class="card-content">
+              <p class="title-none title is-2">Items not found</p>
+            </div>
+          </div>
+        </div>
+        <transition-group tag="div" name="button" appear class="column is-full has-text-centered">
+            <button key="button" v-if="card.length > cardValue" @click="cardScroll();cardValue+=3" ref="btn" class="button is-medium is-dark">Load More</button>
+        </transition-group>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        card: [{
+          image: 'https://bulma.io/images/placeholders/640x360.png',
+          title: 'Title',
+          price: 'Body',
+        },
+        {
+          image: 'https://bulma.io/images/placeholders/640x360.png',
+          title: 'Title',
+          price: 'Body',
+        },
+        {
+          image: 'https://bulma.io/images/placeholders/640x360.png',
+          title: 'Title',
+          price: 'Body',
+        },
+        {
+          image: 'https://bulma.io/images/placeholders/640x360.png',
+          title: 'Title',
+          price: 'Body',
+        },
+        {
+          image: 'https://bulma.io/images/placeholders/640x360.png',
+          title: 'Title',
+          price: 'Body',
+        },
+        {
+          image: 'https://bulma.io/images/placeholders/640x360.png',
+          title: 'Title',
+          price: 'Body',
+        }],
+        cardValue: 3
+      },
+      methods: {
+        cardScroll () {
+          setTimeout(() => window.scrollBy({
+            'behavior': 'smooth',
+            'top': this.$refs.card.pop().scrollHeight
+          }), 150);
+        }
+      },
+      computed: {
+        showCardValue () {
+          return this.card.slice(0,this.cardValue);
+        }
+      }
+    })
+  </script>
+
+  <style>
+    .cards-enter-active, .cards-leave-active {
+      transition: .5s;
+    }
+
+    .cards-enter, .cards-leave-to {
+      transform: scale(0);
+      opacity: 0;
+      position: absolute;
+    }
+
+    .button-enter-active, .button-leave-active {
+      transition: .3s;
+    }
+
+    .button-enter, .button-leave-to {
+      opacity: 0;
+    }
+  </style>
+</body>
+</html>
